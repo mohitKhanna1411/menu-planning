@@ -1,0 +1,785 @@
+swagger: "2.0"
+info:
+  description: "Hello Fresh take-home assignment"
+  version: 1.0.0
+  title: Menu Planning Service
+  contact:
+    email: khanna.mohit94@gmail.com
+basePath: /v1
+tags:
+  - name: auth
+    description: Authentication Services
+  - name: ingredients
+    description: ingredients Services
+  - name: recipe
+    description: Recipe Services
+  - name: menu
+    description: Menu Services
+  - name: review
+    description: Review Services
+paths:
+  /auth/login:
+    post:
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/token_details"
+        "400":
+          description: Missing Username/Password
+        "403":
+          description: Invalid Username/Password
+      description: This is used to authenticate a verified account created through signup.
+      operationId: post_login
+      parameters:
+        - name: payload
+          required: true
+          in: body
+          schema:
+            $ref: "#/definitions/login_details"
+      tags:
+        - auth
+  /auth/signup:
+    post:
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/token_details"
+        "400":
+          description: Missing Username/Password
+        "409":
+          description: Username Taken
+      description: Use this endpoint to create a new account
+      operationId: post_signup
+      parameters:
+        - name: payload
+          required: true
+          in: body
+          schema:
+            $ref: "#/definitions/signup_details"
+      tags:
+        - auth
+  /recipe/:
+    delete:
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/message"
+        "400":
+          description: Malformed Request
+        "403":
+          description: Invalid Auth Token
+        "404":
+          description: recipe Not Found
+      description: Lets you delete the recipe referenced by id.
+      operationId: delete_recipe
+      parameters:
+        - name: Authorization
+          in: header
+          type: string
+          description: Your Authorization Token in the form 'Token <AUTH_TOKEN>'
+        - in: query
+          description: the uuid of the recipe to delete
+          name: uuid
+          type: string
+      tags:
+        - recipe
+    get:
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/recipe_details"
+        "400":
+          description: Malformed Request
+        "403":
+          description: Invalid Auth Token
+        "404":
+          description: recipe Not Found
+      description: Lets you fetch a recipe referenced by id.
+      operationId: get_recipe
+      parameters:
+        - name: Authorization
+          in: header
+          type: string
+          description: Your Authorization Token in the form 'Token <AUTH_TOKEN>'
+        - in: query
+          description: the id of the recipe to fetch
+          name: id
+          type: string
+      tags:
+        - recipe
+    post:
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/recipe_id_details"
+        "400":
+          description: Malformed Request / Image could not be processed
+        "403":
+          description: Invalid Auth Token
+      description: |-
+        Lets you make a new recipe.
+                Returns the recipe_id of the new recipe on success.
+      operationId: post_recipe
+      parameters:
+        - name: Authorization
+          in: header
+          type: string
+          description: Your Authorization Token in the form 'Token <AUTH_TOKEN>'
+        - name: payload
+          required: true
+          in: body
+          schema:
+            $ref: "#/definitions/new_recipe_details"
+      tags:
+        - recipe
+    put:
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/message"
+        "400":
+          description: Malformed Request
+        "403":
+          description: Invalid Auth Token / Unauthorized to edit recipe
+        "404":
+          description: recipe Not Found
+      description: Lets you update a recipe.
+      operationId: put_recipe
+      parameters:
+        - name: Authorization
+          in: header
+          type: string
+          description: Your Authorization Token in the form 'Token <AUTH_TOKEN>'
+        - name: payload
+          required: true
+          in: body
+          schema:
+            $ref: "#/definitions/new_recipe_details"
+        - in: query
+          description: the id of the recipe to update
+          name: id
+          type: string
+      tags:
+        - recipe
+  /recipe/list:
+    get:
+      responses:
+        "200":
+          description: Success
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/recipe_details"
+        "400":
+          description: Malformed Request
+        "403":
+          description: Invalid Auth Token
+        "404":
+          description: recipe Not Found
+      description: >-
+        Lets you search a recipe referenced by recipe name, method,ingredients
+        or meal_type.
+      operationId: list_recipe
+      parameters:
+        - name: Authorization
+          in: header
+          type: string
+          description: Your Authorization Token in the form 'Token <AUTH_TOKEN>'
+        - in: query
+          description: the name of the recipe to fetch
+          name: name
+          type: string
+        - in: query
+          description: the method of the recipe to fetch
+          name: method
+          type: string
+        - in: query
+          description: the meal_type of the recipe to fetch
+          name: meal_type
+          type: string
+        - in: query
+          description: the ingredients of the recipe to fetch
+          name: ingredients
+          type: string
+      tags:
+        - recipe
+  /menu/:
+    delete:
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/message"
+        "400":
+          description: Malformed Request
+        "403":
+          description: Invalid Auth Token
+        "404":
+          description: recipe Not Found
+      description: Lets you delete the recipe referenced by id.
+      operationId: delete_menu
+      parameters:
+        - name: Authorization
+          in: header
+          type: string
+          description: Your Authorization Token in the form 'Token <AUTH_TOKEN>'
+        - in: query
+          description: the id of the menu to delete
+          name: id
+          type: string
+      tags:
+        - menu
+    get:
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/recipe_details"
+        "400":
+          description: Malformed Request
+        "403":
+          description: Invalid Auth Token
+        "404":
+          description: recipe Not Found
+      description: Lets you fetch a recipe referenced by id.
+      operationId: get_menu
+      parameters:
+        - name: Authorization
+          in: header
+          type: string
+          description: Your Authorization Token in the form 'Token <AUTH_TOKEN>'
+        - in: query
+          description: the id of the recipe to fetch
+          name: id
+          type: string
+      tags:
+        - menu
+    post:
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/recipe_id_details"
+        "400":
+          description: Malformed Request / Image could not be processed
+        "403":
+          description: Invalid Auth Token
+      description: |-
+        Lets you make a new recipe.
+                Returns the recipe_id of the new recipe on success.
+      operationId: post_menu
+      parameters:
+        - name: Authorization
+          in: header
+          type: string
+          description: Your Authorization Token in the form 'Token <AUTH_TOKEN>'
+        - name: payload
+          required: true
+          in: body
+          schema:
+            $ref: "#/definitions/new_recipe_details"
+      tags:
+        - menu
+    put:
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/message"
+        "400":
+          description: Malformed Request
+        "403":
+          description: Invalid Auth Token / Unauthorized to edit recipe
+        "404":
+          description: recipe Not Found
+      description: Lets you update a recipe.
+      operationId: put_menu
+      parameters:
+        - name: Authorization
+          in: header
+          type: string
+          description: Your Authorization Token in the form 'Token <AUTH_TOKEN>'
+        - name: payload
+          required: true
+          in: body
+          schema:
+            $ref: "#/definitions/new_recipe_details"
+        - in: query
+          description: the id of the recipe to update
+          name: id
+          type: string
+      tags:
+        - menu
+  /menu/list:
+    get:
+      responses:
+        "200":
+          description: Success
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/recipe_details"
+        "400":
+          description: Malformed Request
+        "403":
+          description: Invalid Auth Token
+        "404":
+          description: recipe Not Found
+      description: >-
+        Lets you search a recipe referenced by recipe name, method,ingredients
+        or meal_type.
+      operationId: list_menu
+      parameters:
+        - name: Authorization
+          in: header
+          type: string
+          description: Your Authorization Token in the form 'Token <AUTH_TOKEN>'
+        - in: query
+          description: the name of the recipe to fetch
+          name: name
+          type: string
+        - in: query
+          description: the method of the recipe to fetch
+          name: method
+          type: string
+        - in: query
+          description: the meal_type of the recipe to fetch
+          name: meal_type
+          type: string
+        - in: query
+          description: the ingredients of the recipe to fetch
+          name: ingredients
+          type: string
+      tags:
+        - menu
+  /ingredients/:
+    delete:
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/message"
+        "400":
+          description: Malformed Request
+          schema:
+            $ref: "#/definitions/message"
+        "403":
+          description: Invalid Auth Token
+          schema:
+            $ref: "#/definitions/message"
+        "404":
+          description: ingredients Not Found
+          schema:
+            $ref: "#/definitions/message"
+      operationId: delete_ingredients
+      parameters:
+        - name: Authorization
+          in: header
+          type: string
+          description: Your Authorization Token in the form 'Token <AUTH_TOKEN>'
+        - in: query
+          description: the uuid of the ingredients to delete
+          name: uuid
+          type: string
+      tags:
+        - ingredients
+    get:
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/recipe_details"
+        "400":
+          description: Malformed Request
+          schema:
+            $ref: "#/definitions/message"
+        "403":
+          description: Invalid Auth Token
+          schema:
+            $ref: "#/definitions/message"
+        "404":
+          description: ingredients Not Found
+          schema:
+            $ref: "#/definitions/message"
+      operationId: get_ingredients
+      parameters:
+        - name: Authorization
+          in: header
+          type: string
+          description: Your Authorization Token in the form 'Token <AUTH_TOKEN>'
+        - in: query
+          description: the uuid of the recipe to fetch
+          name: uuid
+          type: string
+      tags:
+        - ingredients
+    post:
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/recipe_id_details"
+        "400":
+          description: Malformed Request
+          schema:
+            $ref: "#/definitions/message"
+        "403":
+          description: Invalid Auth Token
+          schema:
+            $ref: "#/definitions/message"
+      operationId: post_ingredients
+      parameters:
+        - name: Authorization
+          in: header
+          type: string
+          description: Your Authorization Token in the form 'Token <AUTH_TOKEN>'
+        - name: payload
+          required: true
+          in: body
+          schema:
+            $ref: "#/definitions/new_recipe_details"
+      tags:
+        - ingredients
+    put:
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/message"
+        "400":
+          description: Malformed Request
+        "403":
+          description: Invalid Auth Token / Unauthorized to edit recipe
+        "404":
+          description: recipe Not Found
+      description: Lets you update a recipe.
+      operationId: put_ingredients
+      parameters:
+        - name: Authorization
+          in: header
+          type: string
+          description: Your Authorization Token in the form 'Token <AUTH_TOKEN>'
+        - name: payload
+          required: true
+          in: body
+          schema:
+            $ref: "#/definitions/new_recipe_details"
+        - in: query
+          description: the id of the recipe to update
+          name: id
+          type: string
+      tags:
+        - ingredients
+  /ingredients/list:
+    get:
+      responses:
+        "200":
+          description: Success
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/recipe_details"
+        "400":
+          description: Malformed Request
+        "403":
+          description: Invalid Auth Token
+        "404":
+          description: recipe Not Found
+      description: >-
+        Lets you search a recipe referenced by recipe name, method,ingredients
+        or meal_type.
+      operationId: list_ingredients
+      parameters:
+        - name: Authorization
+          in: header
+          type: string
+          description: Your Authorization Token in the form 'Token <AUTH_TOKEN>'
+        - in: query
+          description: the name of the recipe to fetch
+          name: name
+          type: string
+        - in: query
+          description: the method of the recipe to fetch
+          name: method
+          type: string
+        - in: query
+          description: the meal_type of the recipe to fetch
+          name: meal_type
+          type: string
+        - in: query
+          description: the ingredients of the recipe to fetch
+          name: ingredients
+          type: string
+      tags:
+        - ingredients
+  /review/:
+    delete:
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/message"
+        "400":
+          description: Malformed Request
+        "403":
+          description: Invalid Auth Token
+        "404":
+          description: recipe Not Found
+      description: Lets you delete the recipe referenced by id.
+      operationId: delete_review
+      parameters:
+        - name: Authorization
+          in: header
+          type: string
+          description: Your Authorization Token in the form 'Token <AUTH_TOKEN>'
+        - in: query
+          description: the id of the menu to delete
+          name: id
+          type: string
+      tags:
+        - review
+    get:
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/recipe_details"
+        "400":
+          description: Malformed Request
+        "403":
+          description: Invalid Auth Token
+        "404":
+          description: recipe Not Found
+      description: Lets you fetch a recipe referenced by id.
+      operationId: get_review
+      parameters:
+        - name: Authorization
+          in: header
+          type: string
+          description: Your Authorization Token in the form 'Token <AUTH_TOKEN>'
+        - in: query
+          description: the id of the recipe to fetch
+          name: id
+          type: string
+      tags:
+        - review
+    post:
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/recipe_id_details"
+        "400":
+          description: Malformed Request / Image could not be processed
+        "403":
+          description: Invalid Auth Token
+      description: |-
+        Lets you make a new recipe.
+                Returns the recipe_id of the new recipe on success.
+      operationId: post_review
+      parameters:
+        - name: Authorization
+          in: header
+          type: string
+          description: Your Authorization Token in the form 'Token <AUTH_TOKEN>'
+        - name: payload
+          required: true
+          in: body
+          schema:
+            $ref: "#/definitions/new_recipe_details"
+      tags:
+        - review
+    put:
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/message"
+        "400":
+          description: Malformed Request
+        "403":
+          description: Invalid Auth Token / Unauthorized to edit recipe
+        "404":
+          description: recipe Not Found
+      description: Lets you update a recipe.
+      operationId: put_review
+      parameters:
+        - name: Authorization
+          in: header
+          type: string
+          description: Your Authorization Token in the form 'Token <AUTH_TOKEN>'
+        - name: payload
+          required: true
+          in: body
+          schema:
+            $ref: "#/definitions/new_recipe_details"
+        - in: query
+          description: the id of the recipe to update
+          name: id
+          type: string
+      tags:
+        - review
+  /review/list:
+    get:
+      responses:
+        "200":
+          description: Success
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/recipe_details"
+        "400":
+          description: Malformed Request
+        "403":
+          description: Invalid Auth Token
+        "404":
+          description: recipe Not Found
+      description: >-
+        Lets you search a recipe referenced by recipe name, method,ingredients
+        or meal_type.
+      operationId: list_review
+      parameters:
+        - name: Authorization
+          in: header
+          type: string
+          description: Your Authorization Token in the form 'Token <AUTH_TOKEN>'
+        - in: query
+          description: the name of the recipe to fetch
+          name: name
+          type: string
+        - in: query
+          description: the method of the recipe to fetch
+          name: method
+          type: string
+        - in: query
+          description: the meal_type of the recipe to fetch
+          name: meal_type
+          type: string
+        - in: query
+          description: the ingredients of the recipe to fetch
+          name: ingredients
+          type: string
+      tags:
+        - review
+definitions:
+  new_recipe_details:
+    required:
+      - name
+      - ingredients
+      - steps
+      - classification
+      - nutirtional_information
+      - image
+    properties:
+      name:
+        type: string
+        example: aloo paranthe
+      ingredients:
+        type: array
+        items:
+          type: string
+        example:
+          - "101-dasfda-dasdfad"
+          - "201-nfsnfnjk-fdasfa"
+      method:
+        type: string
+        example: "step1,step2, there you go!"
+      classification:
+        type: string
+        enum:
+          - Breakfast
+          - Brunch
+          - Snack
+          - Lunch
+          - Tea
+          - Supper
+          - Dinner
+      nutirtional_information:
+        type: string
+        example: "some string"
+      image:
+        type: string
+        example: "link to image"
+    type: object
+  recipe_details:
+    properties:
+      id:
+        type: integer
+        example: 101
+      image:
+        type: string
+      name:
+        type: string
+        example: aloo paranthe
+      steps:
+        type: string
+        example: take aloo make paranthe
+      ingredients:
+        type: array
+        items:
+          type: string
+        example: ["21312", "123133"]
+      classification:
+        type: string
+        example: Breakfast
+      nutirtional_information:
+        type: string
+        example: some string
+    type: object
+  recipe_id_details:
+    properties:
+      recipe_id:
+        type: string
+    type: object
+  new_comment_details:
+    properties:
+      comment:
+        type: string
+        example: Awesome recipe!
+    type: object
+  login_details:
+    required:
+      - password
+      - username
+    properties:
+      username:
+        type: string
+        example: mohitkhanna
+      password:
+        type: string
+        example: khanna1234
+    type: object
+  token_details:
+    properties:
+      token:
+        type: string
+    type: object
+  message:
+    type: object
+    properties:
+      message:
+        type: string
+        example: Success
+  signup_details:
+    required:
+      - password
+      - username
+    properties:
+      username:
+        type: string
+        example: mohitkhanna
+      password:
+        type: string
+        example: khanna1234
+    type: object
+responses:
+  ParseError:
+    description: When a mask can't be parsed
+  MaskError:
+    description: When any error occurs on mask
