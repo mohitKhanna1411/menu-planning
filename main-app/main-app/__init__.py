@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import
-from flask_sqlalchemy import SQLAlchemy
+from v1.models import create_db
 
 from flask import Flask
 
 import v1
+
+db_name = 'hellofresh.db'
 
 
 def create_app():
@@ -14,5 +16,7 @@ def create_app():
         url_prefix='/v1')
     return app
 
+
 if __name__ == '__main__':
-    create_app().run(debug=True)
+    create_db(db_name)
+    create_app().run(debug=True, host='0.0.0.0', port=8090)

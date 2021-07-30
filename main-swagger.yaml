@@ -27,8 +27,12 @@ paths:
             $ref: "#/definitions/token_details"
         "400":
           description: Missing Username/Password
+          schema:
+            $ref: "#/definitions/message"
         "403":
           description: Invalid Username/Password
+          schema:
+            $ref: "#/definitions/message"
       description: This is used to authenticate a verified account created through signup.
       operationId: post_login
       parameters:
@@ -48,8 +52,12 @@ paths:
             $ref: "#/definitions/token_details"
         "400":
           description: Missing Username/Password
+          schema:
+            $ref: "#/definitions/message"
         "409":
           description: Username Taken
+          schema:
+            $ref: "#/definitions/message"
       description: Use this endpoint to create a new account
       operationId: post_signup
       parameters:
@@ -394,7 +402,7 @@ paths:
         "200":
           description: Success
           schema:
-            $ref: "#/definitions/recipe_details"
+            $ref: "#/definitions/ingredients"
         "400":
           description: Malformed Request
           schema:
@@ -424,7 +432,7 @@ paths:
         "200":
           description: Success
           schema:
-            $ref: "#/definitions/recipe_id_details"
+            $ref: "#/definitions/message"
         "400":
           description: Malformed Request
           schema:
@@ -443,7 +451,7 @@ paths:
           required: true
           in: body
           schema:
-            $ref: "#/definitions/new_recipe_details"
+            $ref: "#/definitions/ingredientsBody"
       tags:
         - ingredients
     put:
@@ -469,10 +477,10 @@ paths:
           required: true
           in: body
           schema:
-            $ref: "#/definitions/new_recipe_details"
+            $ref: "#/definitions/ingredientsBody"
         - in: query
-          description: the id of the recipe to update
-          name: id
+          description: the uuid of the ingredient to update
+          name: uuid
           type: string
       tags:
         - ingredients
@@ -484,7 +492,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: "#/definitions/recipe_details"
+              $ref: "#/definitions/ingredients"
         "400":
           description: Malformed Request
         "403":
@@ -500,22 +508,6 @@ paths:
           in: header
           type: string
           description: Your Authorization Token in the form 'Token <AUTH_TOKEN>'
-        - in: query
-          description: the name of the recipe to fetch
-          name: name
-          type: string
-        - in: query
-          description: the method of the recipe to fetch
-          name: method
-          type: string
-        - in: query
-          description: the meal_type of the recipe to fetch
-          name: meal_type
-          type: string
-        - in: query
-          description: the ingredients of the recipe to fetch
-          name: ingredients
-          type: string
       tags:
         - ingredients
   /review/:
@@ -737,12 +729,30 @@ definitions:
       recipe_id:
         type: string
     type: object
-  new_comment_details:
-    properties:
-      comment:
-        type: string
-        example: Awesome recipe!
+  ingredientsBody:
     type: object
+    properties:
+      name:
+        type: string
+        example: 'bread'
+      image:
+        type: string
+        example: 'link_image'
+  ingredients:
+    type: object
+    properties:
+      id:
+        type: integer
+        example: 1
+      uuid:
+        type: string
+        example: '213213-23123-dsfsdf-1212'
+      name:
+        type: string
+        example: 'bread'
+      image:
+        type: string
+        example: 'link_image'
   login_details:
     required:
       - password
