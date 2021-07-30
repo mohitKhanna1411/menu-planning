@@ -4,3 +4,7 @@ Flask-RESTful
 jsonschema
 six
 peewee
+python-dotenv
+PyJWT==2.1.0
+Werkzeug==0.16.1
+flask-restplus==0.12.1

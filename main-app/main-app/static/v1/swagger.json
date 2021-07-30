@@ -42,10 +42,16 @@
             }
           },
           "400": {
-            "description": "Missing Username/Password"
+            "description": "Missing Username/Password",
+            "schema": {
+              "$ref": "#/definitions/message"
+            }
           },
           "403": {
-            "description": "Invalid Username/Password"
+            "description": "Invalid Username/Password",
+            "schema": {
+              "$ref": "#/definitions/message"
+            }
           }
         },
         "description": "This is used to authenticate a verified account created through signup.",
@@ -75,10 +81,16 @@
             }
           },
           "400": {
-            "description": "Missing Username/Password"
+            "description": "Missing Username/Password",
+            "schema": {
+              "$ref": "#/definitions/message"
+            }
           },
           "409": {
-            "description": "Username Taken"
+            "description": "Username Taken",
+            "schema": {
+              "$ref": "#/definitions/message"
+            }
           }
         },
         "description": "Use this endpoint to create a new account",
@@ -594,7 +606,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "$ref": "#/definitions/recipe_details"
+              "$ref": "#/definitions/ingredients"
             }
           },
           "400": {
@@ -640,7 +652,7 @@
           "200": {
             "description": "Success",
             "schema": {
-              "$ref": "#/definitions/recipe_id_details"
+              "$ref": "#/definitions/message"
             }
           },
           "400": {
@@ -669,7 +681,7 @@
             "required": true,
             "in": "body",
             "schema": {
-              "$ref": "#/definitions/new_recipe_details"
+              "$ref": "#/definitions/ingredientsBody"
             }
           }
         ],
@@ -709,13 +721,13 @@
             "required": true,
             "in": "body",
             "schema": {
-              "$ref": "#/definitions/new_recipe_details"
+              "$ref": "#/definitions/ingredientsBody"
             }
           },
           {
             "in": "query",
-            "description": "the id of the recipe to update",
-            "name": "id",
+            "description": "the uuid of the ingredient to update",
+            "name": "uuid",
             "type": "string"
           }
         ],
@@ -732,7 +744,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/recipe_details"
+                "$ref": "#/definitions/ingredients"
               }
             }
           },
@@ -754,30 +766,6 @@
             "in": "header",
             "type": "string",
             "description": "Your Authorization Token in the form 'Token <AUTH_TOKEN>'"
-          },
-          {
-            "in": "query",
-            "description": "the name of the recipe to fetch",
-            "name": "name",
-            "type": "string"
-          },
-          {
-            "in": "query",
-            "description": "the method of the recipe to fetch",
-            "name": "method",
-            "type": "string"
-          },
-          {
-            "in": "query",
-            "description": "the meal_type of the recipe to fetch",
-            "name": "meal_type",
-            "type": "string"
-          },
-          {
-            "in": "query",
-            "description": "the ingredients of the recipe to fetch",
-            "name": "ingredients",
-            "type": "string"
           }
         ],
         "tags": [
@@ -1106,14 +1094,39 @@
       },
       "type": "object"
     },
-    "new_comment_details": {
+    "ingredientsBody": {
+      "type": "object",
       "properties": {
-        "comment": {
+        "name": {
           "type": "string",
-          "example": "Awesome recipe!"
+          "example": "bread"
+        },
+        "image": {
+          "type": "string",
+          "example": "link_image"
         }
-      },
-      "type": "object"
+      }
+    },
+    "ingredients": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "example": 1
+        },
+        "uuid": {
+          "type": "string",
+          "example": "213213-23123-dsfsdf-1212"
+        },
+        "name": {
+          "type": "string",
+          "example": "bread"
+        },
+        "image": {
+          "type": "string",
+          "example": "link_image"
+        }
+      }
     },
     "login_details": {
       "required": [
