@@ -14,8 +14,6 @@ from .api.recipe import Recipe
 from .api.recipe_list import RecipeList
 from .api.menu import Menu
 from .api.menu_list import MenuList
-from .api.ingredients import Ingredients
-from .api.ingredients_list import IngredientsList
 from .api.review import Review
 from .api.review_list import ReviewList
 
@@ -27,8 +25,6 @@ routes = [
     dict(resource=RecipeList, urls=['/recipe/list'], endpoint='recipe_list'),
     dict(resource=Menu, urls=['/menu/'], endpoint='menu'),
     dict(resource=MenuList, urls=['/menu/list'], endpoint='menu_list'),
-    dict(resource=Ingredients, urls=['/ingredients/'], endpoint='ingredients'),
-    dict(resource=IngredientsList, urls=['/ingredients/list'], endpoint='ingredients_list'),
     dict(resource=Review, urls=['/review/'], endpoint='review'),
     dict(resource=ReviewList, urls=['/review/list'], endpoint='review_list'),
 ]

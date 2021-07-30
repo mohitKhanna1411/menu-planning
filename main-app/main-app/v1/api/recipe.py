@@ -23,9 +23,15 @@ class Recipe(Resource):
             return {"message": "Recipe not found"}, 404, None
         try:
             ingredients = In.select().where(
-                In.recipe_id == recipe['id']).dicts().get()
+                In.recipe_id == recipe['id'])
         except In.DoesNotExist:
             ingredients = []
+        in_res = []
+        for i in ingredients:
+            in_res.append({
+                "name": i.name,
+                "image": i.image
+            })
         return {
             'id': recipe['id'],
             'uuid': recipe['uuid'],
@@ -34,14 +40,14 @@ class Recipe(Resource):
             'classification': recipe['classification'],
             'image': recipe['image'],
             'nutirtional_information': recipe['nutirtional_information'],
-            'ingredients': ingredients,
+            'ingredients': in_res,
         }, 200, None
 
     def post(self):
         authorize(g.headers)
         data = request.get_json()
 
-        print(data, flush=True)
+        # print(data, flush=True)
         uniquie_uuid = str(uuid.uuid4())
         Re.create(
             uuid=uniquie_uuid,
@@ -52,30 +58,39 @@ class Recipe(Resource):
             nutirtional_information=data.get('nutirtional_information'),
         )
         recipe = Re.select().where(Re.uuid == uniquie_uuid).dicts().get()
-        print(type(recipe))
+
+        for i in data.get('ingredients'):
+            In.create(
+                recipe_id=recipe['id'],
+                uuid=str(uuid.uuid4()),
+                name=i['name'],
+                image=i['image']
+            )
+        print(recipe, flush=True)
         return {'id': recipe['id'],
                 'uuid': recipe['uuid'],
                 'name': recipe['name'],
                 'image': recipe['image'],
                 'classification': recipe['classification'],
-                'nutirtional_information': recipe['nutirtional_information']
+                'nutirtional_information': recipe['nutirtional_information'],
+                'ingredients': data.get('ingredients')
                 }, 200, None
 
     def put(self):
         authorize(g.headers)
         data = request.get_json()
+        try:
+            recipe = Re.select().where(
+                Re.uuid == g.args.get('uuid')).get()
+        except Re.DoesNotExist:
+            return {"message": "Recipe not found"}, 404, None
+        print(data, flush=True)
+        recipe.name = data.get('name')
+        recipe.image = data.get('image')
+        recipe.classification = data.get('classification')
+        recipe.nutirtional_information = data.get('nutirtional_information')
 
-        recipe = Re.select().where(
-            Re.uuid == data.get('uuid')).get()
-        if not recipe:
-            return {"message": "Ingredient not found"}, 404, None
-
-        recipe.name = 'new name'
-        recipe.image = 'new image'
         recipe.save()  # Will do the SQL update query.
-        # print(g.json)
-        # print(g.headers)
-        # print(g.args)
 
         return {"message": "Success"}, 200, None
 
@@ -83,11 +98,12 @@ class Recipe(Resource):
         authorize(g.headers)
         data = request.get_json()
 
-        ingredient = Re.get(Re.uuid == data.get('uuid'))
-        if not ingredient:
-            return {"message": "Ingredient not found"}, 404, None
-        ingredient.delete_instance()
-        # print(g.headers)
-        # print(g.args)
+        try:
+            recipe = Re.select().where(
+                Re.uuid == g.args.get('uuid')).get()
+        except Re.DoesNotExist:
+            return {"message": "Recipe not found"}, 404, None
+        ingredients = In.delete().where(In.recipe_id == recipe.id).execute()
+        recipe.delete_instance()
 
-        return {}, 200, None
+        return {"message": "Success"}, 200, None
