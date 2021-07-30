@@ -120,16 +120,25 @@
             }
           },
           "400": {
-            "description": "Malformed Request"
+            "description": "Malformed Request",
+            "schema": {
+              "$ref": "#/definitions/message"
+            }
           },
           "403": {
-            "description": "Invalid Auth Token"
+            "description": "Invalid Auth Token",
+            "schema": {
+              "$ref": "#/definitions/message"
+            }
           },
           "404": {
-            "description": "recipe Not Found"
+            "description": "recipe Not Found",
+            "schema": {
+              "$ref": "#/definitions/message"
+            }
           }
         },
-        "description": "Lets you delete the recipe referenced by id.",
+        "description": "Lets you delete the recipe referenced by uuid.",
         "operationId": "delete_recipe",
         "parameters": [
           {
@@ -158,16 +167,25 @@
             }
           },
           "400": {
-            "description": "Malformed Request"
+            "description": "Malformed Request",
+            "schema": {
+              "$ref": "#/definitions/message"
+            }
           },
           "403": {
-            "description": "Invalid Auth Token"
+            "description": "Invalid Auth Token",
+            "schema": {
+              "$ref": "#/definitions/message"
+            }
           },
           "404": {
-            "description": "recipe Not Found"
+            "description": "recipe Not Found",
+            "schema": {
+              "$ref": "#/definitions/message"
+            }
           }
         },
-        "description": "Lets you fetch a recipe referenced by id.",
+        "description": "Lets you fetch a recipe referenced by uuid.",
         "operationId": "get_recipe",
         "parameters": [
           {
@@ -178,8 +196,8 @@
           },
           {
             "in": "query",
-            "description": "the id of the recipe to fetch",
-            "name": "id",
+            "description": "the uuid of the recipe to fetch",
+            "name": "uuid",
             "type": "string"
           }
         ],
@@ -192,17 +210,22 @@
           "200": {
             "description": "Success",
             "schema": {
-              "$ref": "#/definitions/recipe_id_details"
+              "$ref": "#/definitions/recipe_details"
             }
           },
           "400": {
-            "description": "Malformed Request / Image could not be processed"
+            "description": "Malformed Request",
+            "schema": {
+              "$ref": "#/definitions/message"
+            }
           },
           "403": {
-            "description": "Invalid Auth Token"
+            "description": "Invalid Auth Token",
+            "schema": {
+              "$ref": "#/definitions/message"
+            }
           }
         },
-        "description": "Lets you make a new recipe.\n        Returns the recipe_id of the new recipe on success.",
         "operationId": "post_recipe",
         "parameters": [
           {
@@ -233,13 +256,22 @@
             }
           },
           "400": {
-            "description": "Malformed Request"
+            "description": "Malformed Request",
+            "schema": {
+              "$ref": "#/definitions/message"
+            }
           },
           "403": {
-            "description": "Invalid Auth Token / Unauthorized to edit recipe"
+            "description": "Invalid Auth Token",
+            "schema": {
+              "$ref": "#/definitions/message"
+            }
           },
           "404": {
-            "description": "recipe Not Found"
+            "description": "recipe Not Found",
+            "schema": {
+              "$ref": "#/definitions/message"
+            }
           }
         },
         "description": "Lets you update a recipe.",
@@ -261,8 +293,8 @@
           },
           {
             "in": "query",
-            "description": "the id of the recipe to update",
-            "name": "id",
+            "description": "the uuid of the recipe to update",
+            "name": "uuid",
             "type": "string"
           }
         ],
@@ -284,13 +316,22 @@
             }
           },
           "400": {
-            "description": "Malformed Request"
+            "description": "Malformed Request",
+            "schema": {
+              "$ref": "#/definitions/message"
+            }
           },
           "403": {
-            "description": "Invalid Auth Token"
+            "description": "Invalid Auth Token",
+            "schema": {
+              "$ref": "#/definitions/message"
+            }
           },
           "404": {
-            "description": "recipe Not Found"
+            "description": "recipe Not Found",
+            "schema": {
+              "$ref": "#/definitions/message"
+            }
           }
         },
         "description": "Lets you search a recipe referenced by recipe name, method,ingredients or meal_type.",
@@ -301,30 +342,6 @@
             "in": "header",
             "type": "string",
             "description": "Your Authorization Token in the form 'Token <AUTH_TOKEN>'"
-          },
-          {
-            "in": "query",
-            "description": "the name of the recipe to fetch",
-            "name": "name",
-            "type": "string"
-          },
-          {
-            "in": "query",
-            "description": "the method of the recipe to fetch",
-            "name": "method",
-            "type": "string"
-          },
-          {
-            "in": "query",
-            "description": "the meal_type of the recipe to fetch",
-            "name": "meal_type",
-            "type": "string"
-          },
-          {
-            "in": "query",
-            "description": "the ingredients of the recipe to fetch",
-            "name": "ingredients",
-            "type": "string"
           }
         ],
         "tags": [
@@ -1000,7 +1017,6 @@
     "new_recipe_details": {
       "required": [
         "name",
-        "ingredients",
         "steps",
         "classification",
         "nutirtional_information",
@@ -1009,19 +1025,9 @@
       "properties": {
         "name": {
           "type": "string",
-          "example": "aloo paranthe"
+          "example": "sandwich"
         },
-        "ingredients": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "example": [
-            "101-dasfda-dasdfad",
-            "201-nfsnfnjk-fdasfa"
-          ]
-        },
-        "method": {
+        "steps": {
           "type": "string",
           "example": "step1,step2, there you go!"
         },
@@ -1054,16 +1060,16 @@
           "type": "integer",
           "example": 101
         },
+        "uuid": {
+          "type": "string",
+          "example": "21321j3123j-3n123-3123"
+        },
         "image": {
           "type": "string"
         },
         "name": {
           "type": "string",
-          "example": "aloo paranthe"
-        },
-        "steps": {
-          "type": "string",
-          "example": "take aloo make paranthe"
+          "example": "sandwich"
         },
         "ingredients": {
           "type": "array",
@@ -1071,9 +1077,13 @@
             "type": "string"
           },
           "example": [
-            "21312",
-            "123133"
+            "101-dasfda-dasdfad",
+            "201-nfsnfnjk-fdasfa"
           ]
+        },
+        "steps": {
+          "type": "string",
+          "example": "take bread make sandwich"
         },
         "classification": {
           "type": "string",
@@ -1158,7 +1168,7 @@
       "properties": {
         "message": {
           "type": "string",
-          "example": "Success"
+          "example": "Success/Error message"
         }
       }
     },

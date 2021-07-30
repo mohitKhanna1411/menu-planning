@@ -20,7 +20,6 @@ class Users(BaseTable):
 
 class Recipes(BaseTable):
     id = AutoField()
-    user_id = ForeignKeyField(Users, backref='recipes')
     uuid = TextField(null=False)
     created_at = DateTimeField(default=datetime.now())
     name = TextField()

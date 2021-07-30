@@ -18,12 +18,13 @@ class AuthSignup(Resource):
 
         user = Users.select().where(Users.username == data.get('username'))
         if not user:
+            uniquie_uuid = str(uuid.uuid4())
             Users.create(
-                uuid=str(uuid.uuid4()),
+                uuid=uniquie_uuid,
                 username=data.get('username'),
                 password=generate_password_hash(data.get('password'))
             )
-            token = gen_token(str(uuid.uuid4()))
+            token = gen_token(uniquie_uuid)
             return {'token': token}, 200, None
         else:
             return {'message': 'Username Taken'}, 409, None
