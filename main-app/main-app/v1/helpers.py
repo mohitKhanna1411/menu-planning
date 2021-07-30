@@ -10,9 +10,9 @@ load_dotenv(find_dotenv())
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 
-def gen_token(public_id):
+def gen_token(uuid):
     return jwt.encode({
-        'public_id': public_id,
+        'uuid': uuid,
         'exp': datetime.utcnow() + timedelta(minutes=120)
     }, SECRET_KEY, algorithm="HS256")
 
@@ -31,10 +31,11 @@ def authorize(headers):
     print(t, SECRET_KEY)
     try:
         data = jwt.decode(t, SECRET_KEY, algorithms=["HS256"])
+        print(data, flush=True)
     except:
         abort(401, "Token Expired")
-    user = Users.select().where(Users.uuid == data['uuid'])
+    user = Users.select().where(Users.uuid == data['uuid']).dicts().get()
     if not user:
         abort(404, 'User Not Found')
-    print(user, flush=True)
+    # print(user, flush=True)
     return user

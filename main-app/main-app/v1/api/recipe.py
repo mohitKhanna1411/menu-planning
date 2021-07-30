@@ -2,7 +2,9 @@
 from __future__ import absolute_import, print_function
 
 from flask import request, g
-
+from ..models import Recipes as Re
+from ..helpers import authorize
+import uuid
 from . import Resource
 from .. import schemas
 
@@ -10,26 +12,57 @@ from .. import schemas
 class Recipe(Resource):
 
     def get(self):
-        print(g.headers)
-        print(g.args)
+        authorize(g.headers)
+        data = request.get_json()
 
-        return {}, 200, None
+        recipe = Re.select().where(Re.uuid ==
+                                   data.get('uuid')).dicts().get()
+        if not recipe:
+            return {"message": "Ingredient not found"}, 404, None
+        return recipe, 200, None
 
     def post(self):
-        print(g.json)
-        print(g.headers)
+        authorize(g.headers)
+        data = request.get_json()
 
-        return {}, 200, None
+        print(data, flush=True)
+        Re.create(
+            uuid=str(uuid.uuid4()),
+            name=data.get('name'),
+            image=data.get('image'),
+            steps=data.get('steps'),
+            classification=data.get('classification'),
+            nutirtional_information=data.get('nutirtional_information'),
+        )
+        return {"message": "Success"}, 200, None
 
     def put(self):
-        print(g.json)
-        print(g.headers)
-        print(g.args)
+        authorize(g.headers)
+        data = request.get_json()
 
-        return {}, 200, None
+        recipe = Re.select().where(
+            Re.uuid == data.get('uuid')).get()
+        if not recipe:
+            return {"message": "Ingredient not found"}, 404, None
+
+        recipe.name = 'new name'
+        recipe.image = 'new image'
+        recipe.save()  # Will do the SQL update query.
+        # print(g.json)
+        # print(g.headers)
+        # print(g.args)
+
+        return {"message": "Success"}, 200, None
 
     def delete(self):
-        print(g.headers)
-        print(g.args)
+        authorize(g.headers)
+        data = request.get_json()
+
+        ingredient = Re.get(Re.uuid == data.get('uuid'))
+        if not ingredient:
+            return {"message": "Ingredient not found"}, 404, None
+        ingredient.delete_instance()
+        # print(g.headers)
+        # print(g.args)
 
         return {}, 200, None
