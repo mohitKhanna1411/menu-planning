@@ -15,10 +15,6 @@
       "description": "Authentication Services"
     },
     {
-      "name": "ingredients",
-      "description": "ingredients Services"
-    },
-    {
       "name": "recipe",
       "description": "Recipe Services"
     },
@@ -571,225 +567,6 @@
         ]
       }
     },
-    "/ingredients/": {
-      "delete": {
-        "responses": {
-          "200": {
-            "description": "Success",
-            "schema": {
-              "$ref": "#/definitions/message"
-            }
-          },
-          "400": {
-            "description": "Malformed Request",
-            "schema": {
-              "$ref": "#/definitions/message"
-            }
-          },
-          "403": {
-            "description": "Invalid Auth Token",
-            "schema": {
-              "$ref": "#/definitions/message"
-            }
-          },
-          "404": {
-            "description": "ingredients Not Found",
-            "schema": {
-              "$ref": "#/definitions/message"
-            }
-          }
-        },
-        "operationId": "delete_ingredients",
-        "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "type": "string",
-            "description": "Your Authorization Token in the form 'Token <AUTH_TOKEN>'"
-          },
-          {
-            "in": "query",
-            "description": "the uuid of the ingredients to delete",
-            "name": "uuid",
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "ingredients"
-        ]
-      },
-      "get": {
-        "responses": {
-          "200": {
-            "description": "Success",
-            "schema": {
-              "$ref": "#/definitions/ingredients"
-            }
-          },
-          "400": {
-            "description": "Malformed Request",
-            "schema": {
-              "$ref": "#/definitions/message"
-            }
-          },
-          "403": {
-            "description": "Invalid Auth Token",
-            "schema": {
-              "$ref": "#/definitions/message"
-            }
-          },
-          "404": {
-            "description": "ingredients Not Found",
-            "schema": {
-              "$ref": "#/definitions/message"
-            }
-          }
-        },
-        "operationId": "get_ingredients",
-        "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "type": "string",
-            "description": "Your Authorization Token in the form 'Token <AUTH_TOKEN>'"
-          },
-          {
-            "in": "query",
-            "description": "the uuid of the recipe to fetch",
-            "name": "uuid",
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "ingredients"
-        ]
-      },
-      "post": {
-        "responses": {
-          "200": {
-            "description": "Success",
-            "schema": {
-              "$ref": "#/definitions/message"
-            }
-          },
-          "400": {
-            "description": "Malformed Request",
-            "schema": {
-              "$ref": "#/definitions/message"
-            }
-          },
-          "403": {
-            "description": "Invalid Auth Token",
-            "schema": {
-              "$ref": "#/definitions/message"
-            }
-          }
-        },
-        "operationId": "post_ingredients",
-        "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "type": "string",
-            "description": "Your Authorization Token in the form 'Token <AUTH_TOKEN>'"
-          },
-          {
-            "name": "payload",
-            "required": true,
-            "in": "body",
-            "schema": {
-              "$ref": "#/definitions/ingredientsBody"
-            }
-          }
-        ],
-        "tags": [
-          "ingredients"
-        ]
-      },
-      "put": {
-        "responses": {
-          "200": {
-            "description": "Success",
-            "schema": {
-              "$ref": "#/definitions/message"
-            }
-          },
-          "400": {
-            "description": "Malformed Request"
-          },
-          "403": {
-            "description": "Invalid Auth Token / Unauthorized to edit recipe"
-          },
-          "404": {
-            "description": "recipe Not Found"
-          }
-        },
-        "description": "Lets you update a recipe.",
-        "operationId": "put_ingredients",
-        "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "type": "string",
-            "description": "Your Authorization Token in the form 'Token <AUTH_TOKEN>'"
-          },
-          {
-            "name": "payload",
-            "required": true,
-            "in": "body",
-            "schema": {
-              "$ref": "#/definitions/ingredientsBody"
-            }
-          },
-          {
-            "in": "query",
-            "description": "the uuid of the ingredient to update",
-            "name": "uuid",
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "ingredients"
-        ]
-      }
-    },
-    "/ingredients/list": {
-      "get": {
-        "responses": {
-          "200": {
-            "description": "Success",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/ingredients"
-              }
-            }
-          },
-          "400": {
-            "description": "Malformed Request"
-          },
-          "403": {
-            "description": "Invalid Auth Token"
-          },
-          "404": {
-            "description": "recipe Not Found"
-          }
-        },
-        "description": "Lets you search a recipe referenced by recipe name, method,ingredients or meal_type.",
-        "operationId": "list_ingredients",
-        "parameters": [
-          {
-            "name": "Authorization",
-            "in": "header",
-            "type": "string",
-            "description": "Your Authorization Token in the form 'Token <AUTH_TOKEN>'"
-          }
-        ],
-        "tags": [
-          "ingredients"
-        ]
-      }
-    },
     "/review/": {
       "delete": {
         "responses": {
@@ -882,7 +659,6 @@
             "description": "Invalid Auth Token"
           }
         },
-        "description": "Lets you make a new recipe.\n        Returns the recipe_id of the new recipe on success.",
         "operationId": "post_review",
         "parameters": [
           {
@@ -1020,7 +796,8 @@
         "steps",
         "classification",
         "nutirtional_information",
-        "image"
+        "image",
+        "ingredients"
       ],
       "properties": {
         "name": {
@@ -1050,6 +827,12 @@
         "image": {
           "type": "string",
           "example": "link to image"
+        },
+        "ingredients": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ingredients"
+          }
         }
       },
       "type": "object"
@@ -1077,8 +860,10 @@
             "type": "string"
           },
           "example": [
-            "101-dasfda-dasdfad",
-            "201-nfsnfnjk-fdasfa"
+            {
+              "name": "bread",
+              "image": "image_link"
+            }
           ]
         },
         "steps": {
@@ -1104,30 +889,9 @@
       },
       "type": "object"
     },
-    "ingredientsBody": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string",
-          "example": "bread"
-        },
-        "image": {
-          "type": "string",
-          "example": "link_image"
-        }
-      }
-    },
     "ingredients": {
       "type": "object",
       "properties": {
-        "id": {
-          "type": "integer",
-          "example": 1
-        },
-        "uuid": {
-          "type": "string",
-          "example": "213213-23123-dsfsdf-1212"
-        },
         "name": {
           "type": "string",
           "example": "bread"
