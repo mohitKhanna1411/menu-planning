@@ -34,8 +34,9 @@ def authorize(headers):
         print(data, flush=True)
     except:
         abort(401, "Token Expired")
-    user = Users.select().where(Users.uuid == data['uuid']).dicts().get()
-    if not user:
+    try:
+        user = Users.select().where(Users.uuid == data['uuid']).dicts().get()
+    except Users.DoesNotExist:
         abort(404, 'User Not Found')
     # print(user, flush=True)
     return user

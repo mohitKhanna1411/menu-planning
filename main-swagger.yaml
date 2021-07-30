@@ -136,7 +136,7 @@ paths:
         "200":
           description: Success
           schema:
-            $ref: "#/definitions/recipe_id_details"
+            $ref: "#/definitions/recipe_details"
         "400":
           description: Malformed Request
           schema:
@@ -679,8 +679,8 @@ definitions:
     properties:
       name:
         type: string
-        example: aloo paranthe
-      method:
+        example: sandwich
+      steps:
         type: string
         example: "step1,step2, there you go!"
       classification:
