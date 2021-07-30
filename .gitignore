@@ -13,6 +13,7 @@ instance/
 .webassets-cache
 
 # Environments
+.env.dev
 .env
 .venv
 env/

@@ -1,0 +1,8 @@
+version: "3.9"
+services:
+  main-app:
+    build: ./main-app/
+    ports:
+      - "8090:8090"
+    volumes:
+      - ./main-app:/main-app
