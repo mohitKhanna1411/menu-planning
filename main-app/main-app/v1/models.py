@@ -57,6 +57,7 @@ class Reviews(BaseTable):
     uuid = TextField(null=False)
     ratings = IntegerField()
     comments = TextField()
+    review_type = TextField()
     menu_id = ForeignKeyField(MenuDetails, backref='reviews')
     recipe_id = ForeignKeyField(Recipes, backref='reviews')
     customer_id = IntegerField()  # must be foregien key from customer table

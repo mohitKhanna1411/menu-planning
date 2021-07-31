@@ -18,10 +18,10 @@ class AuthLogin(Resource):
         data = request.get_json()
         if not data or not data.get('username') or not data.get('password'):
             return {'message': 'Username/Password Cannot be empty'}, 400, None
-
-        user = Users.select().where(Users.username == data.get('username')).dicts().get()
-        print(user, flush=True)
-        if not user:
+        try:
+            user = Users.select().where(Users.username == data.get('username')).dicts().get()
+            print(user, flush=True)
+        except Users.DoesNotExist:
             return {'message': 'Invalid Username/Password'}, 403, None
 
         if check_password_hash(user['password'], data.get('password')):

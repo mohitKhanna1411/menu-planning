@@ -963,6 +963,10 @@
           "type": "string",
           "example": "tasty!"
         },
+        "type": {
+          "type": "string",
+          "example": "Recipe"
+        },
         "menu_id": {
           "type": "string",
           "example": "21312321-4221-fefe-11"
@@ -987,6 +991,10 @@
         "comments": {
           "type": "string",
           "example": "tasty!"
+        },
+        "type": {
+          "type": "string",
+          "example": "Recipe"
         },
         "menu_id": {
           "type": "string",
