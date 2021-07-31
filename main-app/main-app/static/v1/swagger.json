@@ -887,6 +887,7 @@
           "example": "sandwich"
         },
         "ingredients": {
+          "type": "array",
           "items": {
             "$ref": "#/definitions/ingredients"
           }
@@ -1025,6 +1026,7 @@
           "example": 2021
         },
         "recipes": {
+          "type": "array",
           "items": {
             "$ref": "#/definitions/recipe_details"
           }

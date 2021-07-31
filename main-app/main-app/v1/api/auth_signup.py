@@ -25,6 +25,6 @@ class AuthSignup(Resource):
                 password=generate_password_hash(data.get('password'))
             )
             token = gen_token(uniquie_uuid)
-            return {'token': token}, 200, None
+            return {'token': token}, 201, None
         else:
             return {'message': 'Username Taken'}, 409, None

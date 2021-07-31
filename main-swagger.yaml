@@ -582,8 +582,9 @@ definitions:
         type: string
         example: sandwich
       ingredients:
+        type: array
         items:
-            $ref: "#/definitions/ingredients"
+          $ref: "#/definitions/ingredients"
       steps:
         type: string
         example: take bread make sandwich
@@ -639,10 +640,10 @@ definitions:
         example: 21312321-4221-fefe-11
       recipe_id:
         type: string
-        example: dadfsd1221-4221-fefe-11  
+        example: dadfsd1221-4221-fefe-11
       customer_id:
         type: string
-        example: dadfsd1221-4221-fefe-11  
+        example: dadfsd1221-4221-fefe-11
     type: object
   review_details_body:
     properties:
@@ -657,10 +658,10 @@ definitions:
         example: 21312321-4221-fefe-11
       recipe_id:
         type: string
-        example: dadfsd1221-4221-fefe-11  
+        example: dadfsd1221-4221-fefe-11
       customer_id:
         type: string
-        example: dadfsd1221-4221-fefe-11  
+        example: dadfsd1221-4221-fefe-11
     type: object
   menu_details:
     properties:
@@ -680,8 +681,9 @@ definitions:
         type: integer
         example: 2021
       recipes:
+        type: array
         items:
-            $ref: "#/definitions/recipe_details"
+          $ref: "#/definitions/recipe_details"
     type: object
   menu_details_body:
     properties:
@@ -697,7 +699,7 @@ definitions:
       recipes:
         items:
           type: string
-        example: ['123123-rwr','234213-gfsdfgf-12']
+        example: ["123123-rwr", "234213-gfsdfgf-12"]
     type: object
 
   message:
