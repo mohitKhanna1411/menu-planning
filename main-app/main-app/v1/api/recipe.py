@@ -82,7 +82,7 @@ class Recipe(Resource):
                 Re.uuid == g.args.get('uuid')).get()
         except Re.DoesNotExist:
             return {"message": "Recipe not found"}, 404, None
-        print(data, flush=True)
+        # print(data, flush=True)
         recipe.name = data.get('name')
         recipe.image = data.get('image')
         recipe.classification = data.get('classification')

@@ -57,15 +57,12 @@ class Menu(Resource):
                     'ingredients': in_res,
                 })
 
-        print("r_res--------", flush=True)
-        print(r_res, flush=True)
         result = {
             "id": menu['id'],
             "uuid": menu['uuid'],
             "week": menu['week'],
             "year": menu['year'],
             "description": menu['description'],
-            "not_": [],
             "recipes": r_res
         }
         print(result, flush=True)
@@ -109,14 +106,32 @@ class Menu(Resource):
                 }, 201, None
 
     def put(self):
-        print(g.json)
-        print(g.headers)
-        print(g.args)
+        authorize(g.headers)
+        data = request.get_json()
+        try:
+            menu = Me.select().where(
+                Me.uuid == g.args.get('uuid')).get()
+        except Me.DoesNotExist:
+            return {"message": "Menu not found"}, 404, None
+        # print(data, flush=True)
+        menu.week = data.get('week')
+        menu.year = data.get('year')
+        menu.description = data.get('description')
 
-        return {}, 200, None
+        menu.save()  # Will do the SQL update query.
+
+        return {"message": "Success"}, 200, None
 
     def delete(self):
-        print(g.headers)
-        print(g.args)
+        authorize(g.headers)
+        data = request.get_json()
 
-        return {}, 200, None
+        try:
+            menu = Me.select().where(
+                Me.uuid == g.args.get('uuid')).get()
+        except Me.DoesNotExist:
+            return {"message": "Menu not found"}, 404, None
+        menu_s = Ms.delete().where(Ms.menu_id == menu.id).execute()
+        menu.delete_instance()
+
+        return {"message": "Success"}, 200, None
