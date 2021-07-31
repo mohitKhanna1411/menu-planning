@@ -2,8 +2,7 @@
 from __future__ import absolute_import, print_function
 
 from flask import request, g
-from ..models import Ingredients as In
-from ..models import Recipes as Re
+from ..models import Ingredients as In, Recipes as Re
 from ..helpers import authorize
 
 from . import Resource

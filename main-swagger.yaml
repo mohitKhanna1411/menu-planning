@@ -44,7 +44,7 @@ paths:
   /auth/signup:
     post:
       responses:
-        "200":
+        "201":
           description: Success
           schema:
             $ref: "#/definitions/token_details"
@@ -131,7 +131,7 @@ paths:
         - recipe
     post:
       responses:
-        "200":
+        "201":
           description: Success
           schema:
             $ref: "#/definitions/recipe_details"
@@ -230,11 +230,17 @@ paths:
             $ref: "#/definitions/message"
         "400":
           description: Malformed Request
+          schema:
+            $ref: "#/definitions/message"
         "403":
           description: Invalid Auth Token
+          schema:
+            $ref: "#/definitions/message"
         "404":
-          description: recipe Not Found
-      description: Lets you delete the recipe referenced by id.
+          description: Menu Not Found
+          schema:
+            $ref: "#/definitions/message"
+      description: Lets you delete the menu referenced by uuid.
       operationId: delete_menu
       parameters:
         - name: Authorization
@@ -242,8 +248,8 @@ paths:
           type: string
           description: Your Authorization Token in the form 'Token <AUTH_TOKEN>'
         - in: query
-          description: the id of the menu to delete
-          name: id
+          description: the uuid of the menu to delete
+          name: uuid
           type: string
       tags:
         - menu
@@ -252,14 +258,20 @@ paths:
         "200":
           description: Success
           schema:
-            $ref: "#/definitions/recipe_details"
+            $ref: "#/definitions/menu_details"
         "400":
           description: Malformed Request
+          schema:
+            $ref: "#/definitions/message"
         "403":
           description: Invalid Auth Token
+          schema:
+            $ref: "#/definitions/message"
         "404":
           description: recipe Not Found
-      description: Lets you fetch a recipe referenced by id.
+          schema:
+            $ref: "#/definitions/message"
+      description: Lets you fetch a menu referenced by uuid.
       operationId: get_menu
       parameters:
         - name: Authorization
@@ -267,24 +279,25 @@ paths:
           type: string
           description: Your Authorization Token in the form 'Token <AUTH_TOKEN>'
         - in: query
-          description: the id of the recipe to fetch
-          name: id
+          description: the uuid of the recipe to fetch
+          name: uuid
           type: string
       tags:
         - menu
     post:
       responses:
-        "200":
+        "201":
           description: Success
           schema:
-            $ref: "#/definitions/review_details"
+            $ref: "#/definitions/menu_details"
         "400":
-          description: Malformed Request / Image could not be processed
+          description: Malformed Request
+          schema:
+            $ref: "#/definitions/message"
         "403":
           description: Invalid Auth Token
-      description: |-
-        Lets you make a new recipe.
-                Returns the recipe_id of the new recipe on success.
+          schema:
+            $ref: "#/definitions/message"
       operationId: post_menu
       parameters:
         - name: Authorization
@@ -295,7 +308,7 @@ paths:
           required: true
           in: body
           schema:
-            $ref: "#/definitions/new_recipe_details"
+            $ref: "#/definitions/menu_details_body"
       tags:
         - menu
     put:
@@ -306,11 +319,17 @@ paths:
             $ref: "#/definitions/message"
         "400":
           description: Malformed Request
+          schema:
+            $ref: "#/definitions/message"
         "403":
-          description: Invalid Auth Token / Unauthorized to edit recipe
+          description: Invalid Auth Token
+          schema:
+            $ref: "#/definitions/message"
         "404":
           description: recipe Not Found
-      description: Lets you update a recipe.
+          schema:
+            $ref: "#/definitions/message"
+      description: Lets you update a menu.
       operationId: put_menu
       parameters:
         - name: Authorization
@@ -321,10 +340,10 @@ paths:
           required: true
           in: body
           schema:
-            $ref: "#/definitions/new_recipe_details"
+            $ref: "#/definitions/menu_details_body"
         - in: query
-          description: the id of the recipe to update
-          name: id
+          description: the uuid of the recipe to update
+          name: uuid
           type: string
       tags:
         - menu
@@ -336,38 +355,25 @@ paths:
           schema:
             type: array
             items:
-              $ref: "#/definitions/recipe_details"
+              $ref: "#/definitions/menu_details"
         "400":
           description: Malformed Request
+          schema:
+            $ref: "#/definitions/message"
         "403":
           description: Invalid Auth Token
+          schema:
+            $ref: "#/definitions/message"
         "404":
           description: recipe Not Found
-      description: >-
-        Lets you search a recipe referenced by recipe name, method,ingredients
-        or meal_type.
+          schema:
+            $ref: "#/definitions/message"
       operationId: list_menu
       parameters:
         - name: Authorization
           in: header
           type: string
           description: Your Authorization Token in the form 'Token <AUTH_TOKEN>'
-        - in: query
-          description: the name of the recipe to fetch
-          name: name
-          type: string
-        - in: query
-          description: the method of the recipe to fetch
-          name: method
-          type: string
-        - in: query
-          description: the meal_type of the recipe to fetch
-          name: meal_type
-          type: string
-        - in: query
-          description: the ingredients of the recipe to fetch
-          name: ingredients
-          type: string
       tags:
         - menu
   /review/:
@@ -435,7 +441,7 @@ paths:
         - review
     post:
       responses:
-        "200":
+        "201":
           description: Success
           schema:
             $ref: "#/definitions/review_details"
@@ -578,8 +584,7 @@ definitions:
       ingredients:
         type: array
         items:
-          type: string
-        example: [{ name: bread, image: image_link }]
+          $ref: "#/definitions/ingredients"
       steps:
         type: string
         example: take bread make sandwich
@@ -598,7 +603,7 @@ definitions:
         example: "bread"
       image:
         type: string
-        example: "link_image"
+        example: "link_image_"
   login_details:
     required:
       - password
@@ -658,6 +663,45 @@ definitions:
         type: string
         example: dadfsd1221-4221-fefe-11
     type: object
+  menu_details:
+    properties:
+      id:
+        type: integer
+        example: 101
+      uuid:
+        type: string
+        example: 21321j3123j-3n123-3123
+      description:
+        type: string
+        example: menu for week1 feb
+      week:
+        type: integer
+        example: 22
+      year:
+        type: integer
+        example: 2021
+      recipes:
+        type: array
+        items:
+          $ref: "#/definitions/recipe_details"
+    type: object
+  menu_details_body:
+    properties:
+      description:
+        type: string
+        example: menu for week1 feb
+      week:
+        type: integer
+        example: 22
+      year:
+        type: integer
+        example: 2021
+      recipes:
+        items:
+          type: string
+        example: ["123123-rwr", "234213-gfsdfgf-12"]
+    type: object
+
   message:
     type: object
     properties:

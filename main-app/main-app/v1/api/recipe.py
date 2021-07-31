@@ -72,7 +72,7 @@ class Recipe(Resource):
                 'classification': recipe['classification'],
                 'nutirtional_information': recipe['nutirtional_information'],
                 'ingredients': data.get('ingredients')
-                }, 200, None
+                }, 201, None
 
     def put(self):
         authorize(g.headers)

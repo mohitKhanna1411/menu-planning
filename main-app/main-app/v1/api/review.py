@@ -61,7 +61,7 @@ class Review(Resource):
                 'comments': review['comments'],
                 'menu_id': data.get('menu_id'),
                 'recipe_id': data.get('recipe_id'),
-                }, 200, None
+                }, 201, None
 
     def put(self):
         authorize(g.headers)
