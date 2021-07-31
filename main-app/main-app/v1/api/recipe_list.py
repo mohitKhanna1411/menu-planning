@@ -20,12 +20,12 @@ class RecipeList(Resource):
         r_res = []
         for r in recepie:
             in_res = []
-            print("r-----", flush=True)
-            print(r.id, flush=True)
+            # print("r-----", flush=True)
+            # print(r.id, flush=True)
             ingredients = In.select().where(In.recipe_id == r.id)
             for i in ingredients:
-                print("i-----", flush=True)
-                print(i.name, flush=True)
+                # print("i-----", flush=True)
+                # print(i.name, flush=True)
                 in_res.append({
                     "name": i.name,
                     "image":i.image

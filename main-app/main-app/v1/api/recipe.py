@@ -2,13 +2,11 @@
 from __future__ import absolute_import, print_function
 
 from flask import request, g, jsonify
-from ..models import Recipes as Re
-from ..models import Ingredients as In
+from ..models import Recipes as Re, Ingredients as In
 from ..helpers import authorize
 import uuid
 from . import Resource
 from .. import schemas
-from playhouse.shortcuts import model_to_dict
 
 
 class Recipe(Resource):
