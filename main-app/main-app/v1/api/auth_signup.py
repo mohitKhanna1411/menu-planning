@@ -15,9 +15,9 @@ class AuthSignup(Resource):
         data = request.get_json()
         if not data or not data.get('password') or not data.get('username'):
             return {'message': 'Username/Password Cannot be empty'}, 400, None
-
+    
         user = Users.select().where(Users.username == data.get('username'))
-        if not user:
+        if not user.exists():
             uniquie_uuid = str(uuid.uuid4())
             Users.create(
                 uuid=uniquie_uuid,

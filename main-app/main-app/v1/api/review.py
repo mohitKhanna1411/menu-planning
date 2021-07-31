@@ -15,21 +15,27 @@ class Review(Resource):
         authorize(g.headers)
         uuid = g.args.get('uuid')
         print(uuid, flush=True)
+        menu_uuid = ''
+        review_uuid = ''
         try:
             review = Rev.select().where(Rev.uuid == uuid).dicts().get()
         except Rev.DoesNotExist:
             return {"message": "Review not found"}, 404, None
-        if review['menu_id']:
+        if review['review_type'] == 'Menu':
             menu_uuid = Me.select(Me.uuid).where(
                 Me.id == review['menu_id']).dicts().get()
-        elif review['recipe_id']:
+            menu_uuid = menu_uuid['uuid']
+        elif review['review_type'] == 'Recipe':
             review_uuid = Re.select(Re.uuid).where(
                 Re.id == review['recipe_id']).dicts().get()
+            review_uuid = review_uuid['uuid']
+
         return {
             'id': review['id'],
             'uuid': review['uuid'],
             'ratings': review['ratings'],
             'comments': review['comments'],
+            'type': review['review_type'],
             'menu_id': menu_uuid,
             'recipe_id': review_uuid,
             'customer_id': review['customer_id'],
@@ -39,16 +45,28 @@ class Review(Resource):
         authorize(g.headers)
         data = request.get_json()
         uniquie_uuid = str(uuid.uuid4())
-        if data.get('menu_id'):
-            menu_id = Me.select(Me.id).where(
-                Me.uuid == data.get('menu_id')).dicts().get()
-        elif data.get('recipe_id'):
-            recipe_id = Re.select(Me.id).where(
-                Re.uuid == data.get('recipe_id')).dicts().get()
+        menu_id = ''
+        recipe_id = ''
+
+        if data.get('type') == 'Menu':
+            try:
+                menu_id = Me.select(Me.id).where(
+                    Me.uuid == data.get('menu_id')).dicts().get()
+                menu_id = menu_id['id']
+            except Me.DoesNotExist:
+                return {"message": "Menu not found"}, 400, None
+        elif data.get('type') == 'Recipe':
+            try:
+                recipe_id = Re.select(Re.id).where(
+                    Re.uuid == data.get('recipe_id')).dicts().get()
+                recipe_id = recipe_id['id']
+            except Re.DoesNotExist:
+                return {"message": "Recipe not found"}, 400, None
         Rev.create(
             uuid=uniquie_uuid,
             ratings=data.get('ratings'),
             comments=data.get('comments'),
+            review_type=data.get('type'),
             menu_id=menu_id,
             recipe_id=recipe_id,
             customer_id=data.get('customer_id'),
@@ -58,6 +76,7 @@ class Review(Resource):
         return {'id': review['id'],
                 'uuid': review['uuid'],
                 'ratings': review['ratings'],
+                'type': review['review_type'],
                 'comments': review['comments'],
                 'menu_id': data.get('menu_id'),
                 'recipe_id': data.get('recipe_id'),

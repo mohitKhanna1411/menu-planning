@@ -635,6 +635,9 @@ definitions:
       comments:
         type: string
         example: tasty!
+      type:
+        type: string
+        example: Recipe
       menu_id:
         type: string
         example: 21312321-4221-fefe-11
@@ -653,6 +656,9 @@ definitions:
       comments:
         type: string
         example: tasty!
+      type:
+        type: string
+        example: Recipe
       menu_id:
         type: string
         example: 21312321-4221-fefe-11
@@ -701,7 +707,6 @@ definitions:
           type: string
         example: ["123123-rwr", "234213-gfsdfgf-12"]
     type: object
-
   message:
     type: object
     properties:
