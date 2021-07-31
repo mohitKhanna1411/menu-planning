@@ -213,9 +213,6 @@ paths:
           description: recipe Not Found
           schema:
             $ref: "#/definitions/message"
-      description: >-
-        Lets you search a recipe referenced by recipe name, method,ingredients
-        or meal_type.
       operationId: list_recipe
       parameters:
         - name: Authorization
@@ -280,7 +277,7 @@ paths:
         "200":
           description: Success
           schema:
-            $ref: "#/definitions/recipe_id_details"
+            $ref: "#/definitions/review_details"
         "400":
           description: Malformed Request / Image could not be processed
         "403":
@@ -382,11 +379,17 @@ paths:
             $ref: "#/definitions/message"
         "400":
           description: Malformed Request
+          schema:
+            $ref: "#/definitions/message"
         "403":
           description: Invalid Auth Token
+          schema:
+            $ref: "#/definitions/message"
         "404":
           description: recipe Not Found
-      description: Lets you delete the recipe referenced by id.
+          schema:
+            $ref: "#/definitions/message"
+      description: Lets you delete the review referenced by uuid.
       operationId: delete_review
       parameters:
         - name: Authorization
@@ -394,8 +397,8 @@ paths:
           type: string
           description: Your Authorization Token in the form 'Token <AUTH_TOKEN>'
         - in: query
-          description: the id of the menu to delete
-          name: id
+          description: the uuid of the review to delete
+          name: uuid
           type: string
       tags:
         - review
@@ -404,14 +407,20 @@ paths:
         "200":
           description: Success
           schema:
-            $ref: "#/definitions/recipe_details"
+            $ref: "#/definitions/review_details"
         "400":
           description: Malformed Request
+          schema:
+            $ref: "#/definitions/message"
         "403":
           description: Invalid Auth Token
+          schema:
+            $ref: "#/definitions/message"
         "404":
           description: recipe Not Found
-      description: Lets you fetch a recipe referenced by id.
+          schema:
+            $ref: "#/definitions/message"
+      description: Lets you fetch a review referenced by uuid.
       operationId: get_review
       parameters:
         - name: Authorization
@@ -419,8 +428,8 @@ paths:
           type: string
           description: Your Authorization Token in the form 'Token <AUTH_TOKEN>'
         - in: query
-          description: the id of the recipe to fetch
-          name: id
+          description: the uuid of the recipe to fetch
+          name: uuid
           type: string
       tags:
         - review
@@ -429,11 +438,15 @@ paths:
         "200":
           description: Success
           schema:
-            $ref: "#/definitions/recipe_id_details"
+            $ref: "#/definitions/review_details"
         "400":
-          description: Malformed Request / Image could not be processed
+          description: Malformed Request
+          schema:
+            $ref: "#/definitions/message"
         "403":
           description: Invalid Auth Token
+          schema:
+            $ref: "#/definitions/message"
       operationId: post_review
       parameters:
         - name: Authorization
@@ -444,7 +457,7 @@ paths:
           required: true
           in: body
           schema:
-            $ref: "#/definitions/new_recipe_details"
+            $ref: "#/definitions/review_details_body"
       tags:
         - review
     put:
@@ -455,11 +468,17 @@ paths:
             $ref: "#/definitions/message"
         "400":
           description: Malformed Request
+          schema:
+            $ref: "#/definitions/message"
         "403":
-          description: Invalid Auth Token / Unauthorized to edit recipe
+          description: Invalid Auth Token
+          schema:
+            $ref: "#/definitions/message"
         "404":
           description: recipe Not Found
-      description: Lets you update a recipe.
+          schema:
+            $ref: "#/definitions/message"
+      description: Lets you update a review.
       operationId: put_review
       parameters:
         - name: Authorization
@@ -470,10 +489,10 @@ paths:
           required: true
           in: body
           schema:
-            $ref: "#/definitions/new_recipe_details"
+            $ref: "#/definitions/review_details_body"
         - in: query
-          description: the id of the recipe to update
-          name: id
+          description: the uuid of the review to update
+          name: uuid
           type: string
       tags:
         - review
@@ -485,38 +504,25 @@ paths:
           schema:
             type: array
             items:
-              $ref: "#/definitions/recipe_details"
+              $ref: "#/definitions/review_details"
         "400":
           description: Malformed Request
+          schema:
+            $ref: "#/definitions/message"
         "403":
           description: Invalid Auth Token
+          schema:
+            $ref: "#/definitions/message"
         "404":
           description: recipe Not Found
-      description: >-
-        Lets you search a recipe referenced by recipe name, method,ingredients
-        or meal_type.
+          schema:
+            $ref: "#/definitions/message"
       operationId: list_review
       parameters:
         - name: Authorization
           in: header
           type: string
           description: Your Authorization Token in the form 'Token <AUTH_TOKEN>'
-        - in: query
-          description: the name of the recipe to fetch
-          name: name
-          type: string
-        - in: query
-          description: the method of the recipe to fetch
-          name: method
-          type: string
-        - in: query
-          description: the meal_type of the recipe to fetch
-          name: meal_type
-          type: string
-        - in: query
-          description: the ingredients of the recipe to fetch
-          name: ingredients
-          type: string
       tags:
         - review
 definitions:
@@ -584,11 +590,6 @@ definitions:
         type: string
         example: some string
     type: object
-  recipe_id_details:
-    properties:
-      recipe_id:
-        type: string
-    type: object
   ingredients:
     type: object
     properties:
@@ -615,6 +616,42 @@ definitions:
       token:
         type: string
     type: object
+  review_details:
+    properties:
+      id:
+        type: integer
+        example: 101
+      uuid:
+        type: string
+        example: 21321j3123j-3n123-3123
+      ratings:
+        type: integer
+        example: 4
+      comments:
+        type: string
+        example: tasty!
+      menu_id:
+        type: string
+        example: 21312321-4221-fefe-11
+      recipe_id:
+        type: string
+        example: dadfsd1221-4221-fefe-11  
+    type: object
+  review_details_body:
+    properties:
+      ratings:
+        type: integer
+        example: 4
+      comments:
+        type: string
+        example: tasty!
+      menu_id:
+        type: string
+        example: 21312321-4221-fefe-11
+      recipe_id:
+        type: string
+        example: dadfsd1221-4221-fefe-11  
+    type: object
   message:
     type: object
     properties:
@@ -633,8 +670,3 @@ definitions:
         type: string
         example: khanna1234
     type: object
-responses:
-  ParseError:
-    description: When a mask can't be parsed
-  MaskError:
-    description: When any error occurs on mask
