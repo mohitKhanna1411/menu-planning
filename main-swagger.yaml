@@ -635,7 +635,10 @@ definitions:
         example: 21312321-4221-fefe-11
       recipe_id:
         type: string
-        example: dadfsd1221-4221-fefe-11  
+        example: dadfsd1221-4221-fefe-11
+      customer_id:
+        type: string
+        example: dadfsd1221-4221-fefe-11
     type: object
   review_details_body:
     properties:
@@ -650,7 +653,10 @@ definitions:
         example: 21312321-4221-fefe-11
       recipe_id:
         type: string
-        example: dadfsd1221-4221-fefe-11  
+        example: dadfsd1221-4221-fefe-11
+      customer_id:
+        type: string
+        example: dadfsd1221-4221-fefe-11
     type: object
   message:
     type: object
