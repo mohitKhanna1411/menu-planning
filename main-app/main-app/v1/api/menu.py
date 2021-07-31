@@ -65,7 +65,7 @@ class Menu(Resource):
             "description": menu['description'],
             "recipes": r_res
         }
-        print(result, flush=True)
+        # print(result, flush=True)
         return result, 200, None
 
     def post(self):
