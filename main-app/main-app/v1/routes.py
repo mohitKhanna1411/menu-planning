@@ -1,11 +1,4 @@
 # -*- coding: utf-8 -*-
-
-###
-### DO NOT CHANGE THIS FILE
-### 
-### The code is auto generated, your change will be overwritten by 
-### code generating.
-###
 from __future__ import absolute_import
 
 from .api.auth_login import AuthLogin
@@ -17,7 +10,7 @@ from .api.menu_list import MenuList
 from .api.review import Review
 from .api.review_list import ReviewList
 
-
+# routes
 routes = [
     dict(resource=AuthLogin, urls=['/auth/login'], endpoint='auth_login'),
     dict(resource=AuthSignup, urls=['/auth/signup'], endpoint='auth_signup'),

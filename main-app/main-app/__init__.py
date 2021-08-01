@@ -7,11 +7,12 @@ import os
 from flask import Flask
 
 import v1
+# get db from .env file
 load_dotenv(find_dotenv())
 DB_NAME = os.environ.get("DB_NAME")
 
 
-
+# flask app creation
 def create_app():
     app = Flask(__name__, static_folder='static')
     app.register_blueprint(
@@ -20,6 +21,8 @@ def create_app():
     return app
 
 
+# main app
 if __name__ == '__main__':
+    # create db
     create_db(DB_NAME)
     create_app().run(debug=True, host='0.0.0.0', port=8090)

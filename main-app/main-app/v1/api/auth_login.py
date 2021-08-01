@@ -14,7 +14,7 @@ class AuthLogin(Resource):
 
     def post(self):
         print(g.json)
-
+    
         data = request.get_json()
         if not data or not data.get('username') or not data.get('password'):
             return {'message': 'Username/Password Cannot be empty'}, 400, None

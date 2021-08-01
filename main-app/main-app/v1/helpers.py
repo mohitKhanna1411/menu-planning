@@ -9,12 +9,16 @@ from flask_restplus import abort
 load_dotenv(find_dotenv())
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
+# generate JWT tokens, validity 2 hours
+
 
 def gen_token(uuid):
     return jwt.encode({
         'uuid': uuid,
         'exp': datetime.utcnow() + timedelta(minutes=120)
     }, SECRET_KEY, algorithm="HS256")
+
+# decode the encoded jwt from headers and check validity
 
 
 def authorize(headers):
