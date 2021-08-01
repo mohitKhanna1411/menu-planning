@@ -20,6 +20,9 @@
 							"});",
 							"pm.test(\"Body is correct\", function () {",
 							"    pm.expect(JsonData.token).to.be.a('string');",
+							"});",
+							"pm.test(\"Response time is less than 500ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(500);",
 							"});"
 						],
 						"type": "text/javascript"
@@ -55,18 +58,22 @@
 			"response": []
 		},
 		{
-			"name": "Login",
+			"name": "Signup Copy",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
+							"const JsonData = pm.response.json()",
+							"",
+							"pm.test(\"Status code is 409\", function () {",
+							"    pm.response.to.have.status(409);",
 							"});",
-							"pm.test(\"Body is correct\", function () {",
-							"    const JsonData = pm.response.json()",
-							"    pm.expect(JsonData.token).to.be.a('string');",
+							"pm.test(\"Body matches string\", function () {",
+							"    pm.expect(JsonData.message).to.include(\"Username Taken\");",
+							"});",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
 							"});"
 						],
 						"type": "text/javascript"
@@ -79,6 +86,214 @@
 				"body": {
 					"mode": "raw",
 					"raw": "{\n  \"username\": \"mohitkhanna\",\n  \"password\": \"khanna1234\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8090/v1/auth/signup",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"v1",
+						"auth",
+						"signup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Signup with no password",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const JsonData = pm.response.json()",
+							"",
+							"pm.test(\"Status code is 422\", function () {",
+							"    pm.response.to.have.status(422);",
+							"});",
+							"pm.test(\"Body matches string\", function () {",
+							"    pm.expect(JsonData.message).to.include(\"Unprocessable Entity\");",
+							"});",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"username\": \"mohitkhanna\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8090/v1/auth/signup",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"v1",
+						"auth",
+						"signup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const JsonData = pm.response.json()",
+							"",
+							"pm.environment.set(\"token\", JsonData.token);",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Body is correct\", function () {",
+							"    const JsonData = pm.response.json()",
+							"    pm.expect(JsonData.token).to.be.a('string');",
+							"});",
+							"pm.test(\"Response time is less than 500ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(500);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"username\": \"mohitkhanna\",\n  \"password\": \"khanna1234\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8090/v1/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"v1",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login wrong password",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const JsonData = pm.response.json()",
+							"",
+							"pm.environment.set(\"token\", JsonData.token);",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Body is correct\", function () {",
+							"    const JsonData = pm.response.json()",
+							"    pm.expect(JsonData.token).to.be.a('string');",
+							"});",
+							"pm.test(\"Response time is less than 500ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(500);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"username\": \"mohitkhanna\",\n  \"password\": \"khanna1234\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8090/v1/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"v1",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login with no password",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const JsonData = pm.response.json()",
+							"",
+							"pm.test(\"Status code is 403\", function () {",
+							"    pm.response.to.have.status(403);",
+							"});",
+							"pm.test(\"Body matches string\", function () {",
+							"    pm.expect(JsonData.message).to.include(\"Invalid Username/Password\");",
+							"});",
+							"pm.test(\"Response time is less than 500ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(500);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"username\": \"mohitkhanna\",\n  \"password\": \"wrong_password\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -133,7 +348,9 @@
 							"    var jsonData = pm.response.json();",
 							"    pm.expect(jsonData.nutirtional_information).to.eql('some string');",
 							"});",
-							""
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});"
 						],
 						"type": "text/javascript"
 					}
@@ -151,6 +368,63 @@
 				"body": {
 					"mode": "raw",
 					"raw": "{\n  \"name\": \"sandwich\",\n  \"steps\": \"step1,step2, there you go!\",\n  \"classification\": \"Breakfast\",\n  \"nutirtional_information\": \"some string\",\n  \"image\": \"link to image\",\n  \"ingredients\": [\n    {\n      \"name\": \"bread\",\n      \"image\": \"link_image_\"\n    }\n  ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8090/v1/recipe/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"v1",
+						"recipe",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Recipe with no ingredients",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const JsonData = pm.response.json()",
+							"",
+							"pm.test(\"Status code is 422\", function () {",
+							"    pm.response.to.have.status(422);",
+							"});",
+							"pm.test(\"Body matches string\", function () {",
+							"    pm.expect(JsonData.message).to.include(\"Unprocessable Entity\");",
+							"});",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"sandwich\",\n  \"steps\": \"step1,step2, there you go!\",\n  \"classification\": \"Breakfast\",\n  \"nutirtional_information\": \"some string\",\n  \"image\": \"link to image\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -202,6 +476,9 @@
 							"pm.test(\"Test nutirtional_information\", function () {",
 							"    var jsonData = pm.response.json();",
 							"    pm.expect(jsonData.nutirtional_information).to.eql('some string');",
+							"});",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
 							"});"
 						],
 						"type": "text/javascript"
@@ -240,6 +517,115 @@
 			"response": []
 		},
 		{
+			"name": "Get Recipe by uuid with expired token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const JsonData = pm.response.json()",
+							"",
+							"pm.test(\"Status code is 401\", function () {",
+							"    pm.response.to.have.status(401);",
+							"});",
+							"pm.test(\"Body matches string\", function () {",
+							"    pm.expect(JsonData.message).to.include(\"Token Expired\");",
+							"});",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token {{token_expired}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8090/v1/recipe/?uuid={{recipe_uuid}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"v1",
+						"recipe",
+						""
+					],
+					"query": [
+						{
+							"key": "uuid",
+							"value": "{{recipe_uuid}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Recipe by uuid without token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const JsonData = pm.response.json()",
+							"",
+							"pm.test(\"Status code is 403\", function () {",
+							"    pm.response.to.have.status(403);",
+							"});",
+							"pm.test(\"Body matches string\", function () {",
+							"    pm.expect(JsonData.message).to.include(\"Unsupplied Authorization Token\");",
+							"});",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token {{token}}",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8090/v1/recipe/?uuid={{recipe_uuid}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"v1",
+						"recipe",
+						""
+					],
+					"query": [
+						{
+							"key": "uuid",
+							"value": "{{recipe_uuid}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Edit Recipe by uuid",
 			"event": [
 				{
@@ -252,6 +638,9 @@
 							"pm.test(\"Test classification\", function () {",
 							"    var jsonData = pm.response.json();",
 							"    pm.expect(jsonData.message).to.eql('Success');",
+							"});",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
 							"});"
 						],
 						"type": "text/javascript"
@@ -299,6 +688,70 @@
 			"response": []
 		},
 		{
+			"name": "Edit Recipe by uuid without uuid",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const JsonData = pm.response.json()",
+							"",
+							"pm.test(\"Status code is 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"pm.test(\"Body matches string\", function () {",
+							"    pm.expect(JsonData.message).to.include(\"Recipe not found\");",
+							"});",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"name\": \"updated sandwich\",\n  \"steps\": \"step1,step2, there you go!\",\n  \"classification\": \"Breakfast\",\n  \"nutirtional_information\": \"updated some string\",\n  \"image\": \"link to image\",\n  \"ingredients\": [\n    {\n      \"name\": \"bread\",\n      \"image\": \"link_image_\"\n    }\n  ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8090/v1/recipe/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"v1",
+						"recipe",
+						""
+					],
+					"query": [
+						{
+							"key": "uuid",
+							"value": "{{recipe_uuid}}",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "List Recipe",
 			"event": [
 				{
@@ -311,6 +764,9 @@
 							"pm.test(\"Test response\", function () {",
 							"    var jsonData = pm.response.json();",
 							"    pm.expect(jsonData).to.be.a('array');",
+							"});",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
 							"});"
 						],
 						"type": "text/javascript"
@@ -323,6 +779,54 @@
 					{
 						"key": "Authorization",
 						"value": "Token {{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8090/v1/recipe/list",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"v1",
+						"recipe",
+						"list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Recipe with improper token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const JsonData = pm.response.json()",
+							"",
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});",
+							"pm.test(\"Body matches string\", function () {",
+							"    pm.expect(JsonData.message).to.include(\"Authorization Token must start with 'Token'\");",
+							"});",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{token}}",
 						"type": "text"
 					}
 				],
@@ -365,6 +869,9 @@
 							"pm.test(\"Test year\", function () {",
 							"    var jsonData = pm.response.json();",
 							"    pm.expect(jsonData.year).to.eql(2022);",
+							"});",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
 							"});"
 						],
 						"type": "text/javascript"
@@ -426,6 +933,9 @@
 							"pm.test(\"Test year\", function () {",
 							"    var jsonData = pm.response.json();",
 							"    pm.expect(jsonData.year).to.eql(2022);",
+							"});",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
 							"});"
 						],
 						"type": "text/javascript"
@@ -483,6 +993,9 @@
 							"pm.test(\"Test Response\", function () {",
 							"    var jsonData = pm.response.json();",
 							"    pm.expect(jsonData.message).to.eql('Success');",
+							"});",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
 							"});"
 						],
 						"type": "text/javascript"
@@ -542,6 +1055,9 @@
 							"pm.test(\"Test response\", function () {",
 							"    var jsonData = pm.response.json();",
 							"    pm.expect(jsonData).to.be.a('array');",
+							"});",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
 							"});"
 						],
 						"type": "text/javascript"
@@ -596,6 +1112,9 @@
 							"pm.test(\"Test type\", function () {",
 							"    var jsonData = pm.response.json();",
 							"    pm.expect(jsonData.type).to.eql('Menu');",
+							"});",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
 							"});"
 						],
 						"type": "text/javascript"
@@ -659,6 +1178,9 @@
 							"pm.test(\"Test type\", function () {",
 							"    var jsonData = pm.response.json();",
 							"    pm.expect(jsonData.type).to.eql('Recipe');",
+							"});",
+							"pm.test(\"Response time is less than 500ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(500);",
 							"});"
 						],
 						"type": "text/javascript"
@@ -721,6 +1243,9 @@
 							"pm.test(\"Test type\", function () {",
 							"    var jsonData = pm.response.json();",
 							"    pm.expect(jsonData.type).to.eql('Menu');",
+							"});",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
 							"});"
 						],
 						"type": "text/javascript"
@@ -771,6 +1296,9 @@
 							"pm.test(\"Test Response\", function () {",
 							"    var jsonData = pm.response.json();",
 							"    pm.expect(jsonData.message).to.eql('Success');",
+							"});",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
 							"});"
 						],
 						"type": "text/javascript"
@@ -830,6 +1358,9 @@
 							"pm.test(\"Test response\", function () {",
 							"    var jsonData = pm.response.json();",
 							"    pm.expect(jsonData).to.be.a('array');",
+							"});",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
 							"});"
 						],
 						"type": "text/javascript"
@@ -881,6 +1412,9 @@
 							"pm.test(\"Test Response\", function () {",
 							"    var jsonData = pm.response.json();",
 							"    pm.expect(jsonData.message).to.eql('Success');",
+							"});",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
 							"});"
 						],
 						"type": "text/javascript"
@@ -889,6 +1423,60 @@
 			],
 			"request": {
 				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token {{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8090/v1/review/?uuid={{recipe_review_uuid}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"v1",
+						"review",
+						""
+					],
+					"query": [
+						{
+							"key": "uuid",
+							"value": "{{recipe_review_uuid}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Review by uuid Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const JsonData = pm.response.json()",
+							"",
+							"pm.test(\"Status code is 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"pm.test(\"Body matches string\", function () {",
+							"    pm.expect(JsonData.message).to.include(\"Review not found\");",
+							"});",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
 				"header": [
 					{
 						"key": "Authorization",
@@ -931,6 +1519,9 @@
 							"pm.test(\"Test Response\", function () {",
 							"    var jsonData = pm.response.json();",
 							"    pm.expect(jsonData.message).to.eql('Success');",
+							"});",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
 							"});"
 						],
 						"type": "text/javascript"
@@ -969,6 +1560,67 @@
 			"response": []
 		},
 		{
+			"name": "Get Menu by uuid Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const JsonData = pm.response.json()",
+							"",
+							"pm.test(\"Status code is 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"pm.test(\"Body matches string\", function () {",
+							"    pm.expect(JsonData.message).to.include(\"Menu not found\");",
+							"});",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8090/v1/menu/?uuid={{menu_uuid}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"v1",
+						"menu",
+						""
+					],
+					"query": [
+						{
+							"key": "uuid",
+							"value": "{{menu_uuid}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Delete Recipe",
 			"event": [
 				{
@@ -981,6 +1633,9 @@
 							"pm.test(\"Test Response\", function () {",
 							"    var jsonData = pm.response.json();",
 							"    pm.expect(jsonData.message).to.eql('Success');",
+							"});",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
 							"});"
 						],
 						"type": "text/javascript"
@@ -1017,6 +1672,66 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Get Recipe by uuid Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const JsonData = pm.response.json()",
+							"",
+							"pm.test(\"Status code is 404\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"pm.test(\"Body matches string\", function () {",
+							"    pm.expect(JsonData.message).to.include(\"Recipe not found\");",
+							"});",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Token {{token}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8090/v1/recipe/?uuid={{recipe_uuid}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"v1",
+						"recipe",
+						""
+					],
+					"query": [
+						{
+							"key": "uuid",
+							"value": "{{recipe_uuid}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8090"
 		}
 	]
 }

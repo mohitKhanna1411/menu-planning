@@ -1,3 +1,13 @@
+# Tech Stack
+
+- Python 3
+- Flask as web framework
+- PeeWee as ORM
+- Docker as Container
+- SQLite as a database
+- Pytest for unit test
+- Postman for API test
+- Swagger UI for API Documentation
 # System Achitecture
 
 ![System Architecture Diagram](System-arch-menu-planning.png?raw=true "System Architecture")
