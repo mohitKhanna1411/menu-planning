@@ -1,8 +1,10 @@
 from peewee import SqliteDatabase, Model, TextField, IntegerField, AutoField, DateTimeField, BlobField, ForeignKeyField
 import os
 from datetime import datetime
-
-db = SqliteDatabase('hellofresh.db')
+from dotenv import load_dotenv, find_dotenv
+load_dotenv(find_dotenv())
+DB_NAME = os.environ.get("DB_NAME")
+db = SqliteDatabase(DB_NAME)
 
 
 class BaseTable(Model):
