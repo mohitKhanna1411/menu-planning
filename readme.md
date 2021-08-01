@@ -16,7 +16,7 @@ http://localhost:8090/static/swagger-ui/index.html
 
 ## System Design
 
-Please read design.md file added in the repo
+Please read [DESIGN](design/design.md) file added in the repo
 
 ## E2E Test
 
@@ -32,4 +32,6 @@ newman run MenuPlanningService.postman_collection.json
 ```
 
 - Alternatively, import MenuPlanningService.postman_collection.json file into your postman app and run the collection.
+
+## Unit Test
 
