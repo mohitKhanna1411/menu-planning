@@ -1,7 +1,10 @@
 # Menu Planning Service
 
 
-## Steps
+## Steps to run
+```
+Copy the contents of .env-sample file and create new .env file in your local machine
+```
 ```
 cd menu-planning
 docker-compose build

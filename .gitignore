@@ -42,3 +42,7 @@ Generated\ Files/
 
 # Local History for Visual Studio Code
 .history/
+
+
+# db files
+hellofresh.db
