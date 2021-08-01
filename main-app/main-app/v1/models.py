@@ -6,10 +6,15 @@ load_dotenv(find_dotenv())
 DB_NAME = os.environ.get("DB_NAME")
 db = SqliteDatabase(DB_NAME)
 
+# basetable
+
 
 class BaseTable(Model):
     class Meta:
         database = db
+
+# Users inheriting basetable
+# Users table defination
 
 
 class Users(BaseTable):
@@ -18,6 +23,9 @@ class Users(BaseTable):
     created_at = DateTimeField(default=datetime.now())
     username = TextField(null=False, unique=True)
     password = TextField(null=False)
+
+# Recipes table defination
+# Recipes inheriting basetable
 
 
 class Recipes(BaseTable):
@@ -30,6 +38,9 @@ class Recipes(BaseTable):
     image = TextField()
     nutirtional_information = TextField()
 
+# Ingredients table defination
+# Ingredients inheriting basetable
+
 
 class Ingredients(BaseTable):
     id = AutoField()
@@ -37,6 +48,9 @@ class Ingredients(BaseTable):
     uuid = TextField(null=False)
     name = TextField()
     image = TextField()
+
+# MenuDetails table defination
+# MenuDetails inheriting basetable
 
 
 class MenuDetails(BaseTable):
@@ -46,12 +60,18 @@ class MenuDetails(BaseTable):
     year = IntegerField()
     description = TextField()
 
+# Menus table defination
+# Menus inheriting basetable
+
 
 class Menus(BaseTable):
     id = AutoField()
     uuid = TextField(null=False)
     menu_id = ForeignKeyField(MenuDetails, backref='menus')
     recipe_id = ForeignKeyField(Recipes, backref='menus')
+
+# Reviews table defination
+# Reviews inheriting basetable
 
 
 class Reviews(BaseTable):
@@ -66,11 +86,11 @@ class Reviews(BaseTable):
 
 
 def create_db(db_file):
-
+    # check for file
     if os.path.exists(db_file):
         print("Database already exists.")
         return False
-
+    # creating the tables
     db.connect()
     db.create_tables([Users, Recipes, Ingredients,
                       MenuDetails, Menus, Reviews])
