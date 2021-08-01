@@ -4,4 +4,5 @@ WORKDIR /main-app
 RUN pip3 install --upgrade pip
 RUN pip install -r requirements.txt
 EXPOSE 8090
+# CMD python3 -u main-app/__init__.py
 CMD python3 -u main-app/__init__.py
