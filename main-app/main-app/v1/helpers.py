@@ -18,6 +18,8 @@ def gen_token(uuid):
 
 
 def authorize(headers):
+    # print("===================", flush=True)
+    # print(headers, flush=True)
     t = headers.get('Authorization', None)
     if not t:
         abort(403, 'Unsupplied Authorization Token')
@@ -28,7 +30,7 @@ def authorize(headers):
     except:
         abort(403, "Unsupplied Authorization Token")
 
-    print(t, SECRET_KEY)
+    # print(t, SECRET_KEY)
     try:
         data = jwt.decode(t, SECRET_KEY, algorithms=["HS256"])
         print(data, flush=True)
